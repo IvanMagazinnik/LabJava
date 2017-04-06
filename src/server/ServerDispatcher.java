@@ -10,7 +10,6 @@ public class ServerDispatcher extends Thread
 {
     private static Logger log = Logger.getLogger(Server.class.getName());
     private Vector<ClientInfo> mClients = new Vector<>();
-    private boolean enabled = true;
     /**
      * Adds given client to the server's client list.
      */
@@ -43,7 +42,7 @@ public class ServerDispatcher extends Thread
     public void run()
     {
         try {
-            while (enabled) {
+            while (!isInterrupted()) {
                 // Status new Status to top
                 // Status get current status
                 // sendGameStatusToAll(Status)
@@ -58,7 +57,16 @@ public class ServerDispatcher extends Thread
 
     public void stopDispatcher()
     {
-        enabled = false;
+        try
+        {
+            interrupt();
+            log.info("Server Dispatcher has successfully stopped");
+        }
+        catch (Exception e)
+        {
+            log.log(Level.SEVERE, "There was some problem while stop the server ", e);
+        }
+
     }
 
 }
