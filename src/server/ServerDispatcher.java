@@ -5,18 +5,21 @@ package server;
  */
 import java.util.*;
 import java.util.logging.*;
+import java.util.UUID;
 
 public class ServerDispatcher extends Thread
 {
     private static Logger log = Logger.getLogger(Server.class.getName());
     private Vector mClients = new Vector();
+    Map<UUID, ClientInfo> mClients = new HashMap<UUID, ClientInfo>();
     private boolean enabled = true;
     /**
      * Adds given client to the server's client list.
      */
     public synchronized void addClient(ClientInfo aClientInfo)
     {
-        mClients.add(aClientInfo);
+        aClientInfo.clientID = UUID.randomUUID();
+        mClients.put(aClientInfo.clientID, aClientInfo);
     }
 
     /**
@@ -25,16 +28,16 @@ public class ServerDispatcher extends Thread
      */
     public synchronized void deleteClient(ClientInfo aClientInfo)
     {
-        int clientIndex = mClients.indexOf(aClientInfo);
-        if (clientIndex != -1)
-            mClients.removeElementAt(clientIndex);
+        mClients.remove(aClientInfo.clientID);
     }
 
     private synchronized void sendGameStatusToAll(String aMessage)
     {
-        for (int i=0; i<mClients.size(); i++) {
-            ClientInfo clientInfo = (ClientInfo) mClients.get(i);
+        for (Map.Entry<UUID, ClientInfo> pair : mClients.entrySet())
+        {
+            ClientInfo clientInfo = pair.getValue();
             clientInfo.mClientSender.sendMessage(aMessage);
+            log.info("Message " + aMessage + " sent to client with id: " + pair.getKey());
         }
     }
 
