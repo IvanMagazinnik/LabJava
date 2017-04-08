@@ -1,6 +1,8 @@
 package server;
 
 import server.ServerModel.ServerModel;
+import server.ServerView.ServerView;
+import server.ServerController.ServerController;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -27,11 +29,14 @@ public class server {
             System.exit(-1);
         }
         ServerModel model = new ServerModel(serverSocket);
-        model.start();
-        sleep(1000);
-        model.stopServer();
 //        model.start();
-        ServerModel test_model = new ServerModel(serverSocket);
-        test_model.start();
+//        sleep(1000);
+//        model.stopServer();
+////        model.start();
+//        ServerModel test_model = new ServerModel(serverSocket);
+//        test_model.start();
+        ServerController controller = new ServerController(model);
+        ServerView view = new ServerView();
+        view.start(controller);
     }
 }
