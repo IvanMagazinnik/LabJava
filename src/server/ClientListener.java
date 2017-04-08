@@ -9,7 +9,7 @@ import java.util.logging.*;
 
 public class ClientListener extends Thread
 {
-    private static Logger log = Logger.getLogger(Server.class.getName());
+    private static Logger log = Logger.getLogger(ServerModel.class.getName());
     private ServerDispatcher mServerDispatcher;
     private ClientInfo mClientInfo;
     private BufferedReader mIn;

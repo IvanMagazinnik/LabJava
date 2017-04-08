@@ -8,7 +8,7 @@ import java.util.logging.*;
 
 public class ServerDispatcher extends Thread
 {
-    private static Logger log = Logger.getLogger(Server.class.getName());
+    private static Logger log = Logger.getLogger(ServerModel.class.getName());
     private Vector<ClientInfo> mClients = new Vector<>();
     /**
      * Adds given client to the server's client list.
@@ -60,7 +60,7 @@ public class ServerDispatcher extends Thread
         try
         {
             interrupt();
-            log.info("Server Dispatcher has successfully stopped");
+            log.info("ServerModel Dispatcher has successfully stopped");
         }
         catch (Exception e)
         {
