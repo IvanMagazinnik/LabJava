@@ -13,10 +13,7 @@ public class ServerModel extends Thread
     private static Logger log = Logger.getLogger(ServerModel.class.getName());
     private ServerDispatcher serverDispatcher = new ServerDispatcher();
     private ServerSocket serverSocket = null;
-    public ServerModel(ServerSocket server_socket)
-    {
-        serverSocket = server_socket;
-    }
+    private static final int LISTENING_PORT = 1995;
     public void run()
     {
 
@@ -24,6 +21,15 @@ public class ServerModel extends Thread
         serverDispatcher.start();
         log.info("Dispatcher has successfully start");
         // Accept and handle client connections
+        try {
+            serverSocket = new ServerSocket(LISTENING_PORT);
+            log.info("ServerModel successfully started on port " + LISTENING_PORT);
+        } catch (IOException se) {
+            log.info("Can not start listening on port " + LISTENING_PORT);
+            log.log(Level.SEVERE, "Exception ", se);
+            System.exit(-1);
+        }
+
         try {
             while (!isInterrupted()) {
                 try {
@@ -50,7 +56,14 @@ public class ServerModel extends Thread
     }
     public void stopServer() {
         serverDispatcher.stopDispatcher();
-        log.info("Server has stopped listening port");
         interrupt();
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Exception ", e);
+        }
+
+        log.info("Server has stopped listening port");
+
     }
 }
