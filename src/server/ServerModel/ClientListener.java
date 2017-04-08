@@ -32,6 +32,7 @@ public class ClientListener extends Thread
                 if (message == null)
                     break;
                 // Refresh states from client info
+                mServerDispatcher.dispatchMessage(mClientInfo, message);
             }
         } catch (IOException ioex) {
             log.log(Level.SEVERE, "Problem reading from socket (communication is broken) ", ioex);

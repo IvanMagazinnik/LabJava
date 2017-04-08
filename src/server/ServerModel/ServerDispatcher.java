@@ -6,9 +6,11 @@ package server.ServerModel;
 
 import java.util.*;
 import java.util.logging.*;
+import java.net.*;
 
 public class ServerDispatcher extends Thread
 {
+    private Vector mMessageQueue = new Vector();
     private static Logger log = Logger.getLogger(ServerModel.class.getName());
     private Vector<ClientInfo> mClients = new Vector<>();
     /**
@@ -40,6 +42,30 @@ public class ServerDispatcher extends Thread
         }
     }
 
+    public synchronized void dispatchMessage(ClientInfo aClientInfo, String aMessage)
+    {
+        Socket socket = aClientInfo.mSocket;
+        String senderIP = socket.getInetAddress().getHostAddress();
+        String senderPort = "" + socket.getPort();
+        aMessage = senderIP + ":" + senderPort + " : " + aMessage;
+        mMessageQueue.add(aMessage);
+        notify();
+    }
+
+    /**
+     * @return and deletes the next message from the message queue. If there is no
+     * messages in the queue, falls in sleep until notified by dispatchMessage method.
+     */
+    private synchronized String getNextMessageFromQueue()
+            throws InterruptedException
+    {
+        while (mMessageQueue.size()==0)
+            wait();
+        String message = (String) mMessageQueue.get(0);
+        mMessageQueue.removeElementAt(0);
+        return message;
+    }
+
     public void run()
     {
         try {
@@ -47,7 +73,7 @@ public class ServerDispatcher extends Thread
                 // Status new Status to top
                 // Status get current status
                 // sendGameStatusToAll(Status)
-                String message = "Hello";
+                String message = getNextMessageFromQueue();
                 sendGameStatusToAll(message);
             }
         } catch (Exception e) {
