@@ -1,8 +1,9 @@
-package server;
+package server.ServerModel;
 
 /**
  * Created by ivan on 06.04.2017.
  */
+
 import java.net.*;
 import java.io.*;
 import java.util.logging.*;

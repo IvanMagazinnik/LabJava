@@ -1,8 +1,9 @@
-package server;
+package server.ServerModel;
 
 /**
  * Created by ivan on 08.04.2017.
  */
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
