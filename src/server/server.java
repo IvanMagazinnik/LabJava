@@ -28,15 +28,15 @@ public class server {
             log.log(Level.SEVERE, "Exception ", se);
             System.exit(-1);
         }
-        ServerModel model = new ServerModel(serverSocket);
+
 //        model.start();
 //        sleep(1000);
 //        model.stopServer();
 ////        model.start();
 //        ServerModel test_model = new ServerModel(serverSocket);
 //        test_model.start();
-        ServerController controller = new ServerController(model);
-        ServerView view = new ServerView();
-        view.start(controller);
+        ServerController controller = new ServerController(serverSocket);
+        ServerView view = new ServerView(controller);
+        view.start();
     }
 }
