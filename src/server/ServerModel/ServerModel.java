@@ -8,42 +8,41 @@ import java.net.*;
 import java.io.*;
 import java.util.logging.*;
 
-public class ServerModel
+public class ServerModel extends Thread
 {
     private static Logger log = Logger.getLogger(ServerModel.class.getName());
-    private static final int LISTENING_PORT = 1995;
-    private boolean server_status = true;
     private ServerDispatcher serverDispatcher = new ServerDispatcher();
-    public void start()
+    private ServerSocket serverSocket = null;
+    public ServerModel(ServerSocket server_socket)
     {
-        // Open server socket for listening
-        ServerSocket serverSocket = null;
-        try {
-            serverSocket = new ServerSocket(LISTENING_PORT);
-            log.info("ServerModel successfully started on port " + LISTENING_PORT);
-        } catch (IOException se) {
-            log.info("Can not start listening on port " + LISTENING_PORT);
-            log.log(Level.SEVERE, "Exception ", se);
-            System.exit(-1);
-        }
+        serverSocket = server_socket;
+    }
+    public void run()
+    {
 
         // Start ServerDispatcher thread
         serverDispatcher.start();
+        log.info("Dispatcher has successfully start");
         // Accept and handle client connections
-        while (server_status) {
-            try {
-                Socket socket = serverSocket.accept();
-                ClientInfo clientInfo = new ClientInfo();
-                clientInfo.mSocket = socket;
-                serverDispatcher.addClient(clientInfo);
-            } catch (IOException ioe) {
-                log.log(Level.SEVERE, "Exception ", ioe);
+        try {
+            while (!isInterrupted()) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    ClientInfo clientInfo = new ClientInfo();
+                    clientInfo.mSocket = socket;
+                    serverDispatcher.addClient(clientInfo);
+                } catch (IOException ioe) {
+                    log.log(Level.SEVERE, "Exception ", ioe);
+                }
             }
         }
-    }
-    public void stop() {
-        if (server_status) {
-            server_status = false;
+        catch (Exception e) {
+            log.log(Level.SEVERE, "Exception ", e);
         }
+    }
+    public void stopServer() {
+        serverDispatcher.stopDispatcher();
+        log.info("Server has stopped listening port");
+        interrupt();
     }
 }

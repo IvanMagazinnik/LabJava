@@ -65,7 +65,7 @@ public class ServerDispatcher extends Thread
         }
         catch (Exception e)
         {
-            log.log(Level.SEVERE, "There was some problem while stop the server ", e);
+            log.log(Level.SEVERE, "There was some problem while stopServer the server ", e);
         }
 
     }
