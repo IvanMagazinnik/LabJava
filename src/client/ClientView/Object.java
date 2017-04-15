@@ -1,6 +1,7 @@
 package client.ClientView;
 
 import java.awt.*;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -10,14 +11,21 @@ public class Object {
     private Point position;
     private int radius = 0;
     private Color color;
+    private UUID id;
     public Object(Point p, int r) {
         position = p;
         radius = r;
         float red = ThreadLocalRandom.current().nextFloat();
         float green = ThreadLocalRandom.current().nextFloat();
         float blue = ThreadLocalRandom.current().nextFloat();
+        id = UUID.randomUUID();
         color = new Color(red, green, blue);
     }
+    
+    public UUID getId(){
+        return id;
+    }
+    
     public Point getPosition() {
         return position;
     }
@@ -40,5 +48,18 @@ public class Object {
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+    public String toString() {
+        String res = "";
+        res += id.toString();
+        res += ';';
+        res += position.toString();
+        res += ';';
+        Integer rad = radius;
+        res += rad.toString();
+        res += ';';
+        res += color.toString();
+        res += ';';
+        return res;
     }
 }
