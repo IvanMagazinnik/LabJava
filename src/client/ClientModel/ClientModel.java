@@ -40,9 +40,12 @@ public class ClientModel implements Runnable
 
         try {
             // Read messages from the server and print them
+            String id =in.readLine();
+            controller.setId(id);
+            System.out.println(id);
             String message;
             while ((message=in.readLine()) != null) {
-                System.out.println(message);
+//                System.out.println(message);
                 controller.updateGameStatus(message);
             }
         } catch (IOException ioe) {

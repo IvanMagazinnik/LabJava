@@ -20,6 +20,10 @@ public class ServerDispatcher extends Thread
     synchronized void addClient(ClientInfo aClientInfo)
     {
         mClients.add(aClientInfo);
+        UUID id = game.addNewUser();
+        aClientInfo.id = id;
+        aClientInfo.mClientSender.sendMessage(id.toString());
+        sendGameStatusToAll(game.getSer());
         log.info("Added client: " + aClientInfo);
     }
 
@@ -45,11 +49,13 @@ public class ServerDispatcher extends Thread
 
     public synchronized void dispatchMessage(ClientInfo aClientInfo, String aMessage)
     {
-        Socket socket = aClientInfo.mSocket;
-        String senderIP = socket.getInetAddress().getHostAddress();
-        String senderPort = "" + socket.getPort();
-        aMessage = senderIP + ":" + senderPort + " : " + aMessage;
-        mMessageQueue.add(aMessage);
+//        System.out.println("True");
+//        Socket socket = aClientInfo.mSocket;
+//        String senderIP = socket.getInetAddress().getHostAddress();
+//        String senderPort = "" + socket.getPort();
+//        aMessage = senderIP + ":" + senderPort + " : " + aMessage;
+//        mMessageQueue.add(aMessage);
+        game.updateObject(aMessage);
         notify();
     }
 
@@ -84,8 +90,9 @@ public class ServerDispatcher extends Thread
         }
     }
 
-    public void stopDispatcher()
+    public synchronized void stopDispatcher()
     {
+        sendGameStatusToAll("Stop");
         try
         {
             interrupt();
