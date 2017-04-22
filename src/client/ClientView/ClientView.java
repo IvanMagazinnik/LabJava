@@ -3,6 +3,8 @@ package client.ClientView;
 /**
  * Created by ivan on 09.04.2017.
  */
+import client.ClientController.ClientController;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -21,7 +23,9 @@ public class ClientView extends JPanel  implements MouseMotionListener, Runnable
     public JFrame winMain;
     private Object player;
     private Vector<Object> Objects = new Vector<>();
-    public ClientView() {
+    private ClientController controller;
+    public ClientView(ClientController controller_) {
+        controller = controller_;
         player = new Object(new Point(100, 100), 40);
         mousePoint = new Point(100, 100);
         winMain = new JFrame();
@@ -40,11 +44,11 @@ public class ClientView extends JPanel  implements MouseMotionListener, Runnable
 
         thread.start();
     }
-    public static void main(String args[])
-    {
-        new ClientView();
-
-    }
+//    public static void main(String args[])
+//    {
+//        new ClientView();
+//
+//    }
 
     @Override
     public void paint(Graphics g) {

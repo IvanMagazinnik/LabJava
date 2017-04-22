@@ -1,5 +1,6 @@
 package client.ClientModel;
 
+import client.ClientController.ClientController;
 import client.client;
 
 import java.io.*;
@@ -8,14 +9,21 @@ import java.net.*;
 /**
  * Created by ivan on 08.04.2017.
  */
-public class ClientModel{
+public class ClientModel implements Runnable
+{
     private BufferedReader in = null;
     private PrintWriter out = null;
     private Socket clientSocket = null;
-    public ClientModel(Socket socket) {
+    private ClientController controller;
+    public ClientModel(Socket socket, ClientController controller_) {
         clientSocket = socket;
+        controller = controller_;
+        Thread thread = new Thread(this);
+        thread.start();
     }
-    public void start() {
+
+    @Override
+    public void run() {
         // Create and start Sender thread
         try {
             in = new BufferedReader(

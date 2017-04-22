@@ -14,9 +14,9 @@ public class ServerModel extends Thread
     private ServerDispatcher serverDispatcher = new ServerDispatcher();
     private ServerSocket serverSocket = null;
     private static final int LISTENING_PORT = 1995;
+
     public void run()
     {
-
         // Start ServerDispatcher thread
         serverDispatcher.start();
         log.info("Dispatcher has successfully start");

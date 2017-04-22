@@ -1,5 +1,7 @@
 package client;
+import client.ClientController.ClientController;
 import client.ClientModel.ClientModel;
+import client.ClientView.ClientView;
 
 import java.io.*;
 import java.net.*;
@@ -15,12 +17,14 @@ public class client {
     {
 
         try {
-            // Connect to Nakov Chat Server
             Socket socket = new Socket(SERVER_HOSTNAME, SERVER_PORT);
             System.out.println("Connected to server " +
                     SERVER_HOSTNAME + ":" + SERVER_PORT);
-            ClientModel client = new ClientModel(socket);
-            client.start();
+            ClientController controller = new ClientController();
+            ClientModel client = new ClientModel(socket, controller);
+
+            new ClientView(controller);
+            System.out.println("Hello");
         } catch (IOException ioe) {
             System.err.println("Can not establish connection to " +
                     SERVER_HOSTNAME + ":" + SERVER_PORT);

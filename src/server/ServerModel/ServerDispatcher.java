@@ -13,6 +13,7 @@ public class ServerDispatcher extends Thread
     private Vector mMessageQueue = new Vector();
     private static Logger log = Logger.getLogger(ServerModel.class.getName());
     private Vector<ClientInfo> mClients = new Vector<>();
+    public Game game = new Game();
     /**
      * Adds given client to the server's client list.
      */
@@ -74,7 +75,8 @@ public class ServerDispatcher extends Thread
                 // Status get current status
                 // sendGameStatusToAll(Status)
                 String message = getNextMessageFromQueue();
-                sendGameStatusToAll(message);
+                sleep(1000);
+                sendGameStatusToAll(game.getSer());
             }
         } catch (Exception e) {
             // Thread interrupted. Stop its execution
