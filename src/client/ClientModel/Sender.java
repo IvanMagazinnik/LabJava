@@ -1,4 +1,6 @@
 package client.ClientModel;
+import client.ClientController.ClientController;
+
 import java.io.*;
 import java.net.*;
 
@@ -8,10 +10,11 @@ import java.net.*;
 class Sender extends Thread
 {
     private PrintWriter mOut;
-
-    public Sender(PrintWriter aOut)
+    private ClientController controller;
+    public Sender(PrintWriter aOut, ClientController controller_)
     {
         mOut = aOut;
+        controller = controller_;
     }
 
     /**
@@ -21,13 +24,17 @@ class Sender extends Thread
     public void run()
     {
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//            BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             while (!isInterrupted()) {
-                String message = in.readLine();
-                mOut.println(message);
-                mOut.flush();
+//                String message = in.readLine();
+                if(controller.checkClientStatusUpdate())
+                {
+                    String message = controller.getClientStatus();
+                    mOut.println(message);
+                    mOut.flush();
+                }
             }
-        } catch (IOException ioe) {
+        } catch (Exception e) {
             // Communication is broken
         }
     }

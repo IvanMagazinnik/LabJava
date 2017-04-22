@@ -22,7 +22,8 @@ public class ClientView extends JPanel  implements MouseMotionListener, Runnable
     public Point playerLocation;
     public JFrame winMain;
     private Object player;
-    private Vector<Object> Objects = new Vector<>();
+//    private Vector<Object> Objects = new Vector<>();
+    private Objects mObjects;
     private ClientController controller;
     public ClientView(ClientController controller_) {
         controller = controller_;
@@ -36,11 +37,8 @@ public class ClientView extends JPanel  implements MouseMotionListener, Runnable
         winMain.setVisible(true);
         Thread thread = new Thread(this);
 
-
-        for (int i =0;i<10; i++) {
-            Objects.add(new Object(new Point(ThreadLocalRandom.current().nextInt(0, getWidth() + 1), ThreadLocalRandom.current().nextInt(0, getHeight() + 1)),20));
-        }
-
+        while (!controller.checkGameStatusUpdate()) {}
+        mObjects = new Objects(controller.getGameStatus());
 
         thread.start();
     }
@@ -53,12 +51,12 @@ public class ClientView extends JPanel  implements MouseMotionListener, Runnable
     @Override
     public void paint(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight());
-        for(Object o: Objects) {
-
-            g.setColor(o.getColor());
-            Point loc = o.getPosition();
-            g.fillOval(loc.x-o.getRadius()/2, loc.y-o.getRadius()/2, o.getRadius(), o.getRadius());
-        }
+//        for(Object o: Objects) {
+//
+//            g.setColor(o.getColor());
+//            Point loc = o.getPosition();
+//            g.fillOval(loc.x-o.getRadius()/2, loc.y-o.getRadius()/2, o.getRadius(), o.getRadius());
+//        }
         g.setColor(Color.red);
         playerLocation = player.getPosition();
         g.fillOval(playerLocation.x-player.getRadius()/2, playerLocation.y-player.getRadius()/2, player.getRadius(), player.getRadius());

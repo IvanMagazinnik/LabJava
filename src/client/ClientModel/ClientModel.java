@@ -34,7 +34,7 @@ public class ClientModel implements Runnable
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Sender sender = new Sender(out);
+        Sender sender = new Sender(out, controller);
         sender.setDaemon(true);
         sender.start();
 
@@ -43,6 +43,7 @@ public class ClientModel implements Runnable
             String message;
             while ((message=in.readLine()) != null) {
                 System.out.println(message);
+                controller.updateGameStatus(message);
             }
         } catch (IOException ioe) {
             System.err.println("Connection to server broken.");

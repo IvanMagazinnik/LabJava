@@ -21,6 +21,13 @@ public class Object {
         id = UUID.randomUUID();
         color = new Color(red, green, blue);
     }
+    public Object(String str) {
+        String strs[] = str.split(";");
+        id = UUID.fromString(strs[0]);
+        position = new Point(Integer.parseInt(strs[1]),Integer.parseInt(strs[2]));
+        radius = Integer.parseInt(strs[3]);
+        color = new Color(Integer.parseInt(strs[4]), Integer.parseInt(strs[5]) , Integer.parseInt(strs[6]));
+    }
     
     public UUID getId(){
         return id;
@@ -53,12 +60,18 @@ public class Object {
         String res = "";
         res += id.toString();
         res += ';';
-        res += position.toString();
+        res += position.x;
+        res += ';';
+        res += position.y;
         res += ';';
         Integer rad = radius;
         res += rad.toString();
         res += ';';
-        res += color.toString();
+        res += color.getRed();
+        res += ';';
+        res += color.getGreen();
+        res += ';';
+        res += color.getBlue();
         res += ';';
         return res;
     }

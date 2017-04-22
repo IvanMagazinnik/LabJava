@@ -74,8 +74,8 @@ public class ServerDispatcher extends Thread
                 // Status new Status to top
                 // Status get current status
                 // sendGameStatusToAll(Status)
-                String message = getNextMessageFromQueue();
-                sleep(1000);
+//                String message = getNextMessageFromQueue();
+                sleep(10);
                 sendGameStatusToAll(game.getSer());
             }
         } catch (Exception e) {
